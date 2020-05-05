@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
@@ -127,45 +129,45 @@ def plot_degree_dist( m , adjacency_dict , nodes ):
 				nodes = number of nodes at time step k
 		Return: None
 	"""	
-    plt.close()
-    num_nodes = nodes
-    max_degree = 0
-    # Calculate the maximum degree to know the range of x-axis
-    for n in range( num_nodes ):
-        if len( adjacency_dict[n] ) > max_degree:
-            max_degree = len( adjacency_dict[n] )
-    # X-axis and y-axis values
-    x = []
-    y_tmp = []
-    # loop for all degrees until the maximum to compute the portion of nodes for that degree
-    for i in range(max_degree+1):
-        x.append(i)
-        y_tmp.append(0)
-        for n in range( num_nodes ):
-            if len( adjacency_dict[n] ) == i:
-                y_tmp[i] += 1
-        y = [i/num_nodes for i in y_tmp]
-    # Plot the graph
-    plt.plot(x, y,label='Degree distribution',linewidth=0,marker = 'o' , markersize=3)
-    # Check for the lin / log parameter and set axes scale
-    w = [a for a in range(3,max_degree-15)]
-    mean_field = []
-    power_law = []
-    for i in w:
-        x = 2 * ( m**2 ) * (i**-3) * 1 # mean-field
-        mean_field.append(x)
-        x = i ** -2.5 # power-law
-        power_law.append( x )
+	plt.clf()
+	num_nodes = nodes
+	max_degree = 0
+	# Calculate the maximum degree to know the range of x-axis
+	for n in range( num_nodes ):
+	    if len( adjacency_dict[n] ) > max_degree:
+	        max_degree = len( adjacency_dict[n] )
+	# X-axis and y-axis values
+	x = []
+	y_tmp = []
+	# loop for all degrees until the maximum to compute the portion of nodes for that degree
+	for i in range(max_degree+1):
+	    x.append(i)
+	    y_tmp.append(0)
+	    for n in range( num_nodes ):
+	        if len( adjacency_dict[n] ) == i:
+	            y_tmp[i] += 1
+	    y = [i/num_nodes for i in y_tmp]
+	# Plot the graph
+	plt.plot(x, y,label='Degree distribution',linewidth=0,marker = 'o' , markersize=3)
+	# Check for the lin / log parameter and set axes scale
+	w = [a for a in range(3,max_degree-15)]
+	mean_field = []
+	power_law = []
+	for i in w:
+	    x = 2 * ( m**2 ) * (i**-3) * 1 # mean-field
+	    mean_field.append(x)
+	    x = i ** -2.5 # power-law
+	    power_law.append( x )
 
-    plt.plot(w,mean_field, 'k-', color='#7f7f7f' , label="Mean Field")	
-    plt.plot(w,power_law , label="Power law k^-2.5")	
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.title('Degree distribution (log-log scale)')
-    plt.ylabel('P(k)')
-    plt.xlabel('k')
-    plt.legend()
-    plt.show()
+	plt.plot(w,mean_field, 'k-', color='#7f7f7f' , label="Mean Field")	
+	plt.plot(w,power_law , label="Power law k^-2.5")	
+	plt.xscale('log')
+	plt.yscale('log')
+	plt.title('Degree distribution (log-log scale)')
+	plt.ylabel('P(k)')
+	plt.xlabel('k')
+	plt.legend()
+	plt.savefig(str(nodes)+".pdf")
 
 
 def compute_page_rank( adjacency_dict , p = 0.15 ):
@@ -192,7 +194,7 @@ def compute_page_rank( adjacency_dict , p = 0.15 ):
 # ___________________________MAIN CODE _______________________________________
 # ######################################################################################
 
-n = 101
+n = 10001
 m = 4
 k = 4
 
